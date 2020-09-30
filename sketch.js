@@ -3,12 +3,15 @@ var prince,princeImg;
 var zombieImg;
 var monsterImg;
 var finishLine;
-var trials = 0;
-var hearts = [];
+var trials = 0 ;
+var counter = 3;
+//var hearts = [];
 var heartImg;
+var heart1,heart2,heart3
 
 function preload() {
-  princeImg = loadImage("Prince1.png");
+  princeImg = loadImage("Prince.png");
+  princessImg = loadImage("Princess.png");
   zombieImg = loadImage("Zombie.png");
   monsterImg = loadImage("Monster.png");
   mazeImg = loadImage("Maze.png");
@@ -16,35 +19,57 @@ function preload() {
 
 }
 function setup() {
-  createCanvas(830, 830);
+ // createCanvas(830, 830);
+
+  createCanvas(windowWidth,windowHeight);
   //maze1 = new Maze();
   //maze2 = new Maze();
   //maze3 = new Maze();
-  
+  maze = createSprite(415,410,10,10);
+  //maze.addImage(mazeImg);
+ // maze.scale = 1.1;
+
   prince = createSprite(660,15,20,20);
   prince.addImage(princeImg);
   prince.scale = 0.2;
   finishLine = createSprite(824,600,5,50);
   finishLine.visible = false;
 
+  princess = createSprite(-100,-100,20,20);
+  princess.addImage(princessImg);
+  princess.scale = 0.5;
+
+  heart1 = createSprite(29,18,10,10);
+  heart1.addImage(heartImg);
+  heart1.scale = 0.04;
+
+  heart2 = createSprite(50,18,10,10);
+  heart2.addImage(heartImg);
+  heart2.scale = 0.04;
+
+  heart3 = createSprite(70,18,10,10);
+  heart3.addImage(heartImg);
+  heart3.scale = 0.04;
+
   monsterGroup = createGroup();
   zombieGroup = createGroup();
   monstersGroup = createGroup();
   zombiesGroup = createGroup();
 
-var x = 30;
+//var x = 30;
 
-  for(var i=0; i<3; i++){
+ /* for(var i=0; i<3; i++){
     hearts[i] = createSprite(x,20,10,10);
     hearts[i].addImage(heartImg);
     x = x+20;
     hearts[i].scale = 0.03;
   }
+  */
 }
 
 function draw() {
   background(0);
-  console.log(getFrameRate());
+ // console.log(getFrameRate());
 
   edges = createEdgeSprites();
 
@@ -203,6 +228,11 @@ function draw() {
     prince.y = 15;
   }
 
+  if(prince.x > 1 && prince.x < 837 && prince.y> 804 && prince.y< 809){
+    prince.x = 660;
+    prince.y = 15;
+  }
+
   if(prince.x > 52 && prince.x < 59 && prince.y> 62 && prince.y<233){
     prince.x = 660;
     prince.y = 15;
@@ -288,6 +318,11 @@ function draw() {
     prince.y = 15;
   }
 
+  if(prince.x > 571 && prince.x < 577  && prince.y> 345 && prince.y< 400){
+    prince.x = 660;
+    prince.y = 15;
+  }
+
   if(prince.x > 643 && prince.x < 648 && prince.y> 511 && prince.y< 627){
     prince.x = 660;
     prince.y = 15;
@@ -344,6 +379,14 @@ function draw() {
     //text("only have 3 lives.",270,360);
     textSize(50);
     text("Press Space to Start",167,708);
+    //console.log(hearts);
+
+    counter = 3;
+    heart3.visible = true;
+    heart2.visible = true;
+     heart1.visible = true;
+
+    princess.visible = false;
 
     prince.x = 400;
     prince.y = 455;
@@ -354,19 +397,56 @@ function draw() {
       prince.x = 660;
       prince.y = 15;
       prince.scale = 0.23;
-    }
+       }
+
     break;
 
-    case 1: background(mazeImg);
+    case 1: background(0);
+maze.visible = true;
+  maze.addImage(mazeImg);
+  maze.scale = 1.09;
+  textSize(30);
+  fill("white");
+  text("At the top right corner is the amount of lives you have left.", 55,869);
 
     spawnZombies();
 
     if(prince.isTouching(zombieGroup)){
-      hearts.pop(trials);
+     // hearts.pop();
+     // push();
+     // tint(255,0);
+     // hearts[hearts.length-1].addImage(heartImg);
+      //pop();
+      // console.log(hearts[hearts.length-1]);
+      prince.x = 660;
+      prince.y = 15;
+
+      if(prince.x === 660 && prince.y === 15){
+        prince.x = 660;
+        prince.y = 35;
+      }
       trials++;
+      counter--
+      if(counter === 2){
+        heart3.visible = false;
+        heart2.visible = true;
+        heart1.visible = true;
+      }
+
+      if(counter === 1){
+        heart3.visible = false;
+        heart2.visible = false;
+        heart1.visible = true;
+      }
+
+      if(counter === 0){
+        heart3.visible = false;
+        heart2.visible = false;
+        heart1.visible = false;
+      }
     }
 
-    if(trials>3){
+    if(trials>2){
       gameState = 7;
     }
     //camera.x = prince.x;
@@ -399,7 +479,7 @@ function draw() {
 
     break;
 
-    case 2:
+    case 2: maze.visible = false;
     textSize(30);
     fill("red");
     text("Level 2",335,262);
@@ -410,6 +490,10 @@ function draw() {
     textSize(15);
     text("(REMINDER: IF YOU TOUCH THE WALLS, YOU WILL GO BACK TO WHERE YOU STARTED.)",100,588);
     fill("white");
+    heart3.visible = true;
+    heart2.visible = true;
+     heart1.visible = true;
+     counter = 3;
    // text("Remember... you only have 3 minutes and 3 lives.",10,360);
    prince.x = 400;
    prince.y = 455;
@@ -423,17 +507,48 @@ function draw() {
    }
     break;
 
-    case 3: background(mazeImg)
+    case 3: background(0)
+    maze.visible = true;
+    maze.addImage(mazeImg);
+    maze.scale = 1.09;
+
+    textSize(30);
+  fill("white");
+  text("At the top right corner is the amount of lives you have left.", 55,869);
 
       spawnZombies();
       spawnMonsters();
 
       if(prince.isTouching(zombieGroup) || prince.isTouching(monsterGroup)){
-        hearts.pop(trials);
+      //  hearts.pop();
+        prince.x = 660;
+        prince.y = 15;
+
+        if(prince.x === 660 && prince.y === 15){
+          prince.x = 660;
+          prince.y = 35;
+        }
         trials++;
-      }
+        counter--
+        if(counter === 2){
+          heart3.visible = false;
+          heart2.visible = true;
+          heart1.visible = true;
+        }
   
-      if(trials>3){
+        if(counter === 1){
+          heart3.visible = false;
+          heart2.visible = false;
+          heart1.visible = true;
+        }
+  
+        if(counter === 0){
+          heart3.visible = false;
+          heart2.visible = false;
+          heart1.visible = false;
+        }
+      }
+      if(trials>2){
         gameState = 7;
       }
 
@@ -469,7 +584,7 @@ function draw() {
     
 break;
 
-    case 4:
+    case 4: maze.visible = false;
     textSize(30);
     fill("green");
     text("Level 3",335,262);
@@ -483,6 +598,10 @@ break;
    prince.x = 400;
    prince.y = 455;
    prince.scale = 1;
+   heart3.visible = true;
+    heart2.visible = true;
+     heart1.visible = true;
+   counter = 3;
 
    if(keyIsDown(32)){
      gameState = 5;
@@ -492,17 +611,52 @@ break;
    }
     break;
 
-    case 5: background(mazeImg)
+    case 5: background(0);
+
+    maze.visible = true;
+    maze.addImage(mazeImg);
+    maze.scale = 1.09;
+
+    textSize(30);
+    fill("white");
+    text("At the top right corner is the amount of lives you have left.", 55,869);
 
       spawnInfiniteZombies();
       spawnInfiniteMonsters();
 
       if(prince.isTouching(zombiesGroup) || prince.isTouching(monstersGroup)){
-        hearts.pop(trials);
+      //  hearts.pop();
+        prince.x = 660;
+        prince.y = 15;
+
+        if(prince.x === 660 && prince.y === 15){
+          prince.x = 660;
+          prince.y = 35;
+        }
+        
         trials++;
+
+        counter--
+        if(counter === 2){
+          heart3.visible = false;
+          heart2.visible = true;
+          heart1.visible = true;
+        }
+  
+        if(counter === 1){
+          heart3.visible = false;
+          heart2.visible = false;
+          heart1.visible = true;
+        }
+  
+        if(counter === 0){
+          heart3.visible = false;
+          heart2.visible = false;
+          heart1.visible = false;
+        }
       }
   
-      if(trials>3){
+      if(trials>2){
         gameState = 7;
       }
 
@@ -539,17 +693,32 @@ break;
     break;
 
     case 6: 
-    
-    fill("white");
+    maze.visible = false;
+    fill("red");
     textSize(30);
-    text("Congratulations! You saved the princess!");
+    text("Congratulations! You saved the princess!",150,340);
+    text("Press R to Restart the Whole Game",154,823);
+    textSize(16);
+    fill("purple")
+    text("Thank you for saving me!",605,448);
+    princess.x = 523;
+    princess.y = 498;
 
-    if(keyIsDown()){
+    princess.visible = true;
+
+    prince.x = 341;
+    prince.y = 493;
+
+    prince.scale = 1.5;
+
+    if(keyIsDown(82)){
       gameState = 0;
+      trials = 0;
     }
     break;
 
     case 7:
+      maze.visible = false;
       background(0);
       textSize(40);
       fill("purple");
@@ -558,6 +727,7 @@ break;
       if(keyIsDown(82)){
         gameState = 0;
         trials = 0;
+        counter  = 3;
       }
       break;
     
