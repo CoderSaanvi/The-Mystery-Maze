@@ -21,7 +21,7 @@ function preload() {
 function setup() {
  // createCanvas(830, 830);
 
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(840,830);
   //maze1 = new Maze();
   //maze2 = new Maze();
   //maze3 = new Maze();
@@ -114,6 +114,11 @@ function draw() {
   }
 
   if(prince.x > 324 && prince.x <627 && prince.y>228 && prince.y<238){
+    prince.x = 660;
+    prince.y = 15;
+  }
+  
+  if(prince.x > 0 && prince.x < 5 && prince.y> 22 && prince.y< 86){
     prince.x = 660;
     prince.y = 15;
   }
@@ -357,6 +362,11 @@ function draw() {
     prince.x = 660;
     prince.y = 15;
   }
+  
+  if(prince.x > 826 && prince.x < 833 && prince.y> 15 && prince.y< 559){
+    prince.x = 660;
+    prince.y = 15;
+  }
 
  // frameRate(1000);
   switch(gameState){
@@ -370,6 +380,7 @@ function draw() {
     text("Use the arrow keys to play.",304,189);
     textSize(15);
     text("(REMINDER: IF YOU TOUCH THE WALLS, YOU WILL GO BACK TO WHERE YOU STARTED.)",100,588);
+    text("ALL OF YOUR LIVES ARE SHOWN IN THE TOP RIGHT CORNER",182,632);
     fill("blue");
     textSize(40);
     text("Level 1",325,262);
@@ -423,7 +434,7 @@ maze.visible = true;
 
       if(prince.x === 660 && prince.y === 15){
         prince.x = 660;
-        prince.y = 35;
+        prince.y = 85;
       }
       trials++;
       counter--
@@ -445,6 +456,7 @@ maze.visible = true;
         heart1.visible = false;
       }
     }
+      
 
     if(trials>2){
       gameState = 7;
@@ -526,7 +538,7 @@ maze.visible = true;
 
         if(prince.x === 660 && prince.y === 15){
           prince.x = 660;
-          prince.y = 35;
+          prince.y = 85;
         }
         trials++;
         counter--
@@ -631,7 +643,7 @@ break;
 
         if(prince.x === 660 && prince.y === 15){
           prince.x = 660;
-          prince.y = 35;
+          prince.y = 85;
         }
         
         trials++;
